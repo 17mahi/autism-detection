@@ -136,5 +136,5 @@ This tool is for screening purposes only and should not be used as a substitute 
 ## Contact
 
 For questions or support, please contact:
-- Email: support@example.com
-- Phone: +1 (555) 123-4567 
+- Email: aryamahesh1707@gmail.com
+- Phone: +91 8861222052 
