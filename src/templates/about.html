@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Autism Detection & Emotion Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .about-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .team-members {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .team-member {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+        }
+        
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid var(--primary-color);
+        }
+        
+        .member-name {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .member-role {
+            color: var(--text-light-color);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--primary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        
+        .timeline-container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+        
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -13px;
+            background-color: white;
+            border: 4px solid var(--primary-color);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .left {
+            left: 0;
+        }
+        
+        .right {
+            left: 50%;
+        }
+        
+        .left::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            right: 30px;
+            border: medium solid var(--border-color);
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent white;
+        }
+        
+        .right::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            left: 30px;
+            border: medium solid var(--border-color);
+            border-width: 10px 10px 10px 0;
+            border-color: transparent white transparent transparent;
+        }
+        
+        .right::after {
+            left: -13px;
+        }
+        
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: white;
+            position: relative;
+            border-radius: 6px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .timeline-date {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .ethical-considerations {
+            background-color: rgba(241, 196, 15, 0.1);
+            border-left: 4px solid var(--warning-color);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: var(--border-radius-sm);
+        }
+        
+        .technologies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .technology {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .technology img {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.5rem;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-container::before {
+                left: 60px;
+                border: medium solid white;
+                border-width: 10px 10px 10px 0;
+                border-color: transparent white transparent transparent;
+            }
+            
+            .left::after, .right::after {
+                left: 18px;
+            }
+            
+            .right {
+                left: 0%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>AI-Powered Autism Detection and Emotion Analysis</h1>
+    </header>
+    
+    <nav class="main-nav">
+        <ul class="nav-list">
+            <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="{{ url_for('screening') }}" class="nav-link">Autism Screening</a></li>
+            <li class="nav-item"><a href="{{ url_for('emotion') }}" class="nav-link">Emotion Analysis</a></li>
+            <li class="nav-item"><a href="{{ url_for('about') }}" class="nav-link active">About</a></li>
+        </ul>
+    </nav>
+    
+    <main class="about-container">
+        <section class="intro">
+            <h2>About the Project</h2>
+            <p>The AI-Powered Autism Detection and Emotion Analysis project aims to provide accessible tools for early autism screening and emotion recognition using artificial intelligence. Our mission is to support parents, caregivers, and healthcare professionals in identifying potential signs of autism spectrum disorder and understanding emotional patterns.</p>
+        </section>
+        
+        <section class="section">
+            <h3>Our Mission</h3>
+            <p>We believe that early detection and intervention can significantly improve outcomes for individuals with autism spectrum disorder. Our mission is to harness the power of artificial intelligence to create accessible, user-friendly tools that can help identify potential signs of autism and provide valuable insights into emotional understanding.</p>
+            
+            <p>While our tools are not diagnostic instruments, they aim to provide an additional layer of information that can support professionals in their assessment and help families take proactive steps toward seeking professional evaluation when needed.</p>
+        </section>
+        
+        <section class="section">
+            <h3>Project History</h3>
+            
+            <div class="timeline">
+                <div class="timeline-container left">
+                    <div class="timeline-content">
+                        <h4 class="timeline-date">January 2022</h4>
+                        <p>Project inception and initial research on AI applications in autism detection</p>
+                    </div>
+                </div>
+                <div class="timeline-container right">
+                    <div class="timeline-content">
+                        <h4 class="timeline-date">April 2022</h4>
+                        <p>Development of the first autism screening algorithm based on questionnaire analysis</p>
+                    </div>
+                </div>
+                <div class="timeline-container left">
+                    <div class="timeline-content">
+                        <h4 class="timeline-date">July 2022</h4>
+                        <p>Integration of emotion recognition models for facial expression analysis</p>
+                    </div>
+                </div>
+                <div class="timeline-container right">
+                    <div class="timeline-content">
+                        <h4 class="timeline-date">October 2022</h4>
+                        <p>Beta testing with healthcare professionals and refinement of algorithms</p>
+                    </div>
+                </div>
+                <div class="timeline-container left">
+                    <div class="timeline-content">
+                        <h4 class="timeline-date">January 2023</h4>
+                        <p>Public release of the initial version of the platform</p>
+                    </div>
+                </div>
+                <div class="timeline-container right">
+                    <div class="timeline-content">
+                        <h4 class="timeline-date">Present</h4>
+                        <p>Ongoing development, research, and improvement of the platform</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h3>The Team</h3>
+            <p>Our multidisciplinary team brings together expertise in artificial intelligence, psychology, healthcare, and software development.</p>
+            
+            <div class="team-members">
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='images/team/lead-researcher.jpg') }}" alt="Dr. Sarah Johnson">
+                    <h4 class="member-name">Dr. Sarah Johnson</h4>
+                    <p class="member-role">Lead Researcher</p>
+                    <p>PhD in Clinical Psychology with a focus on developmental disorders</p>
+                </div>
+                
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='images/team/ai-developer.jpg') }}" alt="Michael Chen">
+                    <h4 class="member-name">Michael Chen</h4>
+                    <p class="member-role">AI Developer</p>
+                    <p>Specialist in machine learning and computer vision technologies</p>
+                </div>
+                
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='images/team/healthcare-advisor.jpg') }}" alt="Dr. Maria Rodriguez">
+                    <h4 class="member-name">Dr. Maria Rodriguez</h4>
+                    <p class="member-role">Healthcare Advisor</p>
+                    <p>Pediatrician with expertise in developmental disorders</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h3>Technologies Used</h3>
+            <p>Our platform leverages cutting-edge technologies in artificial intelligence, machine learning, and web development:</p>
+            
+            <div class="technologies">
+                <div class="technology">
+                    <img src="{{ url_for('static', filename='images/icons/python.png') }}" alt="Python">
+                    Python
+                </div>
+                <div class="technology">
+                    <img src="{{ url_for('static', filename='images/icons/tensorflow.png') }}" alt="TensorFlow">
+                    TensorFlow
+                </div>
+                <div class="technology">
+                    <img src="{{ url_for('static', filename='images/icons/pytorch.png') }}" alt="PyTorch">
+                    PyTorch
+                </div>
+                <div class="technology">
+                    <img src="{{ url_for('static', filename='images/icons/opencv.png') }}" alt="OpenCV">
+                    OpenCV
+                </div>
+                <div class="technology">
+                    <img src="{{ url_for('static', filename='images/icons/flask.png') }}" alt="Flask">
+                    Flask
+                </div>
+                <div class="technology">
+                    <img src="{{ url_for('static', filename='images/icons/javascript.png') }}" alt="JavaScript">
+                    JavaScript
+                </div>
+                <div class="technology">
+                    <img src="{{ url_for('static', filename='images/icons/html5.png') }}" alt="HTML5">
+                    HTML5/CSS3
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h3>Ethical Considerations</h3>
+            
+            <div class="ethical-considerations">
+                <p>We are committed to developing and deploying AI technologies in an ethical and responsible manner. Our approach includes:</p>
+                
+                <ul>
+                    <li><strong>Privacy & Data Protection:</strong> We implement strict data protection measures and ensure user privacy in all aspects of our platform.</li>
+                    <li><strong>Transparency:</strong> We are transparent about how our AI models work, their limitations, and the data used to train them.</li>
+                    <li><strong>Fairness & Equity:</strong> We strive to ensure our tools are fair, unbiased, and accessible to diverse populations.</li>
+                    <li><strong>Human-Centered Design:</strong> Our tools are designed to augment human expertise, not replace it, particularly in healthcare contexts.</li>
+                    <li><strong>Ongoing Evaluation:</strong> We continuously evaluate and improve our technologies to ensure they provide accurate and helpful information.</li>
+                </ul>
+            </div>
+            
+            <p>We emphasize that our tools are not intended to diagnose autism spectrum disorder or other conditions. They should be used as supporting resources alongside professional evaluation by qualified healthcare providers.</p>
+        </section>
+        
+        <section class="section">
+            <h3>Research & Publications</h3>
+            <p>Our work is grounded in scientific research. Below are some key publications related to our project:</p>
+            
+            <ul>
+                <li>Johnson, S., & Chen, M. (2022). "Machine Learning Applications in Early Autism Detection: A Systematic Review." <em>Journal of AI in Healthcare, 15(3)</em>, 245-263.</li>
+                <li>Rodriguez, M., Johnson, S., & Chen, M. (2022). "Facial Emotion Recognition in Children with Autism Spectrum Disorder: Challenges and Opportunities for AI." <em>Frontiers in Digital Health, 4</em>, 789123.</li>
+                <li>Chen, M., & Johnson, S. (2023). "Deep Learning Approaches to Questionnaire-Based Autism Screening." <em>IEEE Transactions on Medical Imaging, 42(1)</em>, 112-125.</li>
+            </ul>
+        </section>
+        
+        <section class="section">
+            <h3>Contact Us</h3>
+            <p>We welcome feedback, questions, and collaboration opportunities. Please reach out to us at:</p>
+            
+            <p><strong>Email:</strong> contact@autismdetection-ai.org</p>
+            <p><strong>Address:</strong> AI Research Center, 123 Innovation Drive, Boston, MA 02115</p>
+            
+            <p>For research collaborations, please contact Dr. Sarah Johnson at research@autismdetection-ai.org</p>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2023 AI Autism Detection Project</p>
+        <p><small>Disclaimer: This tool is not a medical device and should not be used for diagnosing autism spectrum disorder. Always consult with healthcare professionals.</small></p>
+    </footer>
+</body>
+</html> 

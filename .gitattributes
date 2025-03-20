@@ -1,0 +1,61 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Python files
+*.py text diff=python
+*.pyw text diff=python
+*.pyi text diff=python
+
+# Documentation
+*.md text diff=markdown
+*.rst text
+*.txt text
+*.pdf binary
+*.doc binary
+*.docx binary
+*.xls binary
+*.xlsx binary
+*.ppt binary
+*.pptx binary
+
+# Images
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text
+
+# Data files
+*.csv text
+*.json text
+*.xml text
+*.yaml text
+*.yml text
+
+# Model files
+*.h5 binary
+*.pkl binary
+*.joblib binary
+*.pth binary
+*.onnx binary
+
+# Environment files
+.env* text
+.env.local text
+.env.*.local text
+
+# IDE files
+.idea/* text
+.vscode/* text
+*.swp text
+*.swo text
+.DS_Store binary
+
+# Logs
+*.log text
+logs/* text
+
+# Test files
+tests/test_data/* binary
+tests/fixtures/* text 

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Analysis - Autism Detection & Emotion Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .emotion-analysis {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .analysis-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .option {
+            flex: 1;
+            min-width: 250px;
+            padding: 1.5rem;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .option h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .file-upload {
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 2px dashed var(--primary-color);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .file-upload input {
+            display: none;
+        }
+        
+        .upload-btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 0.5rem;
+        }
+        
+        .upload-btn:hover {
+            background: var(--secondary-color);
+        }
+        
+        .webcam-container {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .webcam-video {
+            width: 100%;
+            max-width: 480px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .webcam-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin: 0 0.5rem;
+        }
+        
+        .webcam-btn:hover {
+            background: var(--secondary-color);
+        }
+        
+        .webcam-btn.stop {
+            background: var(--error-color);
+        }
+        
+        .webcam-btn.stop:hover {
+            background: #c0392b;
+        }
+        
+        .analysis-results {
+            display: none;
+            margin-top: 2rem;
+        }
+        
+        .emotion-chart-container {
+            margin-top: 1rem;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .emotion-timeline-container {
+            margin-top: 2rem;
+            width: 100%;
+        }
+        
+        .result-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .emotion-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .badge-happy { background-color: #F1C40F; }
+        .badge-sad { background-color: #3498DB; }
+        .badge-angry { background-color: #E74C3C; }
+        .badge-surprise { background-color: #2ECC71; }
+        .badge-fear { background-color: #9B59B6; }
+        .badge-disgust { background-color: #8E44AD; }
+        .badge-neutral { background-color: #95A5A6; }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .processed-image {
+            max-width: 100%;
+            margin-top: 1rem;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Autism Detection & Emotion Analysis</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('screening') }}">Screening</a></li>
+                <li><a href="{{ url_for('emotion') }}" class="active">Emotion Analysis</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="emotion-analysis">
+            <h1>Emotion Analysis</h1>
+            <p>Upload an image or video to analyze emotions using our AI-powered system.</p>
+            
+            <div class="upload-container">
+                <form id="emotionForm" action="{{ url_for('api.emotion_analysis') }}" method="POST" enctype="multipart/form-data">
+                    <div class="upload-section">
+                        <div class="file-input-wrapper">
+                            <input type="file" id="mediaInput" name="media" accept="image/*,video/*" required>
+                            <label for="mediaInput" class="file-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Choose Image or Video</span>
+                            </label>
+                            <div class="file-name"></div>
+                        </div>
+                        
+                        <div class="preview-container">
+                            <div id="imagePreview" class="preview-box">
+                                <i class="fas fa-image"></i>
+                                <p>Image preview will appear here</p>
+                            </div>
+                            <div id="videoPreview" class="preview-box">
+                                <i class="fas fa-video"></i>
+                                <p>Video preview will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-options">
+                        <h3>Analysis Options</h3>
+                        <div class="option-group">
+                            <label>
+                                <input type="checkbox" name="options" value="real_time" checked>
+                                Real-time Analysis
+                            </label>
+                            <label>
+                                <input type="checkbox" name="options" value="detailed_report" checked>
+                                Detailed Report
+                            </label>
+                            <label>
+                                <input type="checkbox" name="options" value="emotion_timeline" checked>
+                                Emotion Timeline
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-chart-line"></i>
+                        Analyze Emotions
+                    </button>
+                </form>
+            </div>
+            
+            <div class="results-section" style="display: none;">
+                <h2>Analysis Results</h2>
+                <div class="results-content">
+                    <div class="result-card">
+                        <h3>Dominant Emotion</h3>
+                        <div class="emotion-display">
+                            <i class="fas fa-smile"></i>
+                            <span class="emotion-text">Happiness</span>
+                        </div>
+                        <div class="emotion-confidence">
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 85%"></div>
+                            </div>
+                            <span>85% Confidence</span>
+                        </div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>Emotion Distribution</h3>
+                        <div class="emotion-chart">
+                            <!-- Chart will be rendered here -->
+                        </div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>Emotion Timeline</h3>
+                        <div class="timeline-chart">
+                            <!-- Timeline chart will be rendered here -->
+                        </div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>Key Insights</h3>
+                        <ul class="insights-list">
+                            <li>Strong positive emotional response</li>
+                            <li>Consistent emotional state</li>
+                            <li>Natural emotional transitions</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="downloadReport()">
+                        <i class="fas fa-download"></i>
+                        Download Report
+                    </button>
+                    <button class="btn btn-primary" onclick="shareResults()">
+                        <i class="fas fa-share"></i>
+                        Share Results
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>Dedicated to providing advanced AI solutions for autism detection and emotion analysis.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{{ url_for('screening') }}">Screening</a></li>
+                    <li><a href="{{ url_for('emotion') }}">Emotion Analysis</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: support@example.com</p>
+                <p>Phone: (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Autism Detection & Emotion Analysis. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/emotion.js') }}"></script>
+</body>
+</html> 
